@@ -31,7 +31,6 @@ do
 	"disply databases")
 		if [ -f displydb.sh ]
 		then
-			echo "displying databases"
 			./displydb.sh
 			break
 		else
@@ -41,7 +40,6 @@ do
 	"connect to database")
 		if [ -f connectdb.sh ]
 		then
-			echo "Connecting to database ..."
 			./connectdb.sh
 			break
 		else
