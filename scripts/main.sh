@@ -14,6 +14,23 @@ then
 	fi
 fi
 
+if ! [ -d  $projectPath/confg ]
+then
+	if [ -d $projectPath ]
+	then
+		mkdir $projectPath/confg
+	else	
+		echo "project must be in $projectPath"
+		exit
+	fi
+else
+	if [ -f $projectPath/confg/connection ]
+	then
+		rm $projectPath/confg/connection 
+	fi
+fi
+
+
 while [ true ]
 do
 	select choice in "create database" "disply databases" "connect to database" "drop database" "exit"
@@ -61,7 +78,6 @@ do
 	*)
 		echo "Wrong Entery"
 		;;
-
 	esac
 	done
 done
