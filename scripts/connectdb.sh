@@ -34,7 +34,8 @@ connected_database()
     then
         echo `head -1 $1/confg/connection`
     else
-        echo 'not found'
+        touch $1/confg/connection
+        echo `head -1 $1/confg/connection`
     fi
 }
 if [[ $1 = 1 ]]

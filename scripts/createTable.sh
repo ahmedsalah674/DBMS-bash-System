@@ -33,11 +33,39 @@ read_data()
 read_coulmns_names()
 {
     export COLUMNS_NAMES_var=$2
-    local  PK_VAR=$3
+    # export TYPES_VAR=$3
+    local PK_VAR=${*: -1}
     i=0
     while [ $i -lt $1 ]
     do
+    # id (int) : name (string)
         read -p "enter column name:" COLUMNS_NAMES[$i]
+        
+        j=0
+        for name in ${COLUMNS_NAMES[@]}
+        do  
+            if [[ $j -ne $i && ${COLUMNS_NAMES[$((i))]} = ${COLUMNS_NAMES[$((j))]} ]]
+            then
+                echo "<<there is coulmn with same name ( ${COLUMNS_NAMES[$((j))]} )" 
+                continue 2
+            
+            else
+                break
+            fi
+        done
+
+        while true
+        do
+            read -p "enter data type of column: " types[$i]
+            if [[ ${types[$((i))]} = "int" || ${types[$((i))]} = "string" ]]
+            then
+                break
+            else 
+                echo "<< wrong data type >>"
+            fi
+        done
+        
+
         if ! [ $PK ]
         then
             while true
@@ -53,10 +81,14 @@ read_coulmns_names()
                 fi
             done
         fi
+
         i=$(expr $i + 1)
+
     done
-    eval $COLUMNS_NAMES_var="'${COLUMNS_NAMES[@]}'"
-    eval $PK_VAR="'$PK'"   
+    eval $COLUMNS_NAMES_var="'${COLUMNS_NAMES[@]}'" 
+    # eval $TYPES_var="'${types[@]}'" 
+    eval $PK_VAR="'$PK'"
+
 }
 create_table_file()
 {
@@ -66,40 +98,44 @@ create_table_file()
     do 
         if [ $i = 0 ]
         then
-        structure=$name  
+            structure=$name' '${types[$((i))]} 
         else
-            structure=$structure":"$name
+            structure=$structure":"$name' '${types[$((i))]} 
         fi
         i=$(( $i + 1 ))
     done
+    fun ${*: -1}
+    if [[ $? = 0 && $i -gt 0 ]]
+    then
+        structure=$structure":(pk="${*: -1}")"
+    fi
     echo $structure > $1
-
 }
 main()
 {
-    database=$1
+    database=$2
     if [[ $database ]]
     then
-        if [ -d $2/databases/$database  ]
+        if [ -d $1/databases/$database  ]
         then
-            read_data tableName columnNumber "$2/databases/$database"
-            typeset columnNames[$columnNumber]
+            read_data tableName columnNumber "$1/databases/$database"
+            # typeset columnNames[$columnNumber] 
+            # typeset types[$columnNumber] 
             read_coulmns_names $columnNumber columnNames pk
-            create_table_file "$2/databases/$database/$tableName" $columnNames
+            create_table_file "$1/databases/$database/$tableName" $columnNames $pk
             # echo "you want to create table ( $tableName ) with ( $columnNumber ) and names ( ${columnNames[*]} ) and primary key in ( $pk ) "
-        elif ! [ -d $2 ]  
+        elif ! [ -d $1 ]  
         then
-            echo "project must be in $2"
+            echo "project must be in $1"
         else
-            echo "$database not found"
+            echo "<<$database not found>>"
         fi
     else
         echo "no database connection "
     fi
 }
 
-main $(./connectdb.sh 1) $projectPath
-
+main $projectPath $(./connectdb.sh 1)
 
 # function myfunc()
 # {
