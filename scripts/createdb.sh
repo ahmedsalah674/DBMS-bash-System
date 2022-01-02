@@ -3,13 +3,9 @@ projectPath=~/bash
 
 # -e -> to read \n as new line
 echo -e ' \nplease enter database name'
-
 read sql;
-database=${sql[2]};
-
-
+# database=$1
 #create database ahmed
-
 if [ -d  $projectPath/databases ]
 then	
 	if ! [ -d  $projectPath/databases/$database ]

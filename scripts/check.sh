@@ -1,47 +1,61 @@
 # !usr/bin/bash
 projectPath=~/bash
+
 check_Word()
 {
-    if [[ $1 = "CREATE" ]]  #create table ahmed
-                            #create database ahmed
+    pat='([0-9a-zA-Z])'
+    if [[ ${*^^} =~ "CREATE DATABASE "(([0-9a-zA-Z])) ]]   #create database ahmed
     then 
-        BEIGN="0"
-    elif [[ $1 = "SELECT" ]]
+        ./createdb.sh $3
+    elif [[ ${*^^} =~ "CREATE TABLE "(([0-9a-zA-Z])) ]]
     then
-        BEIGN="1"
-    elif [[ $1 = "DROP" ]] #drop database ahmed
-                            #drop table ahmed
+        echo 'here bro'
+    elif [[ ${*^^} =~ "DROP DATABASE "(([0-9a-zA-Z])) ]] #drop database ahmed
     then 
-        BEIGN="2"
-    elif [[ $1 = "USE" ]]    #use iti
+        ./dropdb.sh $3
+    elif [[ ${*^^} =~ "USE "(([0-9a-zA-Z])) ]]    #use iti
     then
-        BEIGN="3"
+        ./conccectdb.sh $2
     elif [[ $1 = "ALTER" ]] 
     then
         BEIGN="4"
-    elif [[ $1 = "DELETE" ]]    
+    elif [[ ${*^^} =~ "DELETE FROM "(([0-9a-zA-Z])) ]]     
     then
         BEIGN="5"
-    elif [[ $1 = "TABLE" ]]    
+    elif [[ $1 = "SHOW TABLES" ]]    
     then 
-        BEIGN="6"
+        ./listTables.sh
     elif [[ $1 = "DATABASE" ]]
     then
         BEIGN="7"
-    elif [[ $1 = "INSERT" ]]
+    elif [[ $* = "" ]]
     then
         BEIGN="8"
-    elif [[ $1 = "INTO" ]]
+#     elif [[ ${*^^} =~(INSERT INTO ) ([0-9a-zA-Z]) (where) ]]; 
+        elif [[ ${*^^} =~ (INSERT INTO )(([0-9a-zA-Z]+))( WHERE)(([0-9a-zA-Z]+)) ]]; 
     then
         BEIGN="9"
     else 
         BEIGN="-1"
     fi
 }
+
+ 
+# str="first url1, second url2, third url3"
+
+# if [[ $str =~ (second )([^,]*) ]]; then
+#   echo "match: '${BASH_REMATCH[2]}'"
+# else
+#   echo "no match found"
+# fi
+
+
 echo 'enter sql stetment'
 read sql
-for word in ${sql[@]}
-    check_Word ${word^^}
-    RESULT=$RESULT$BEIGN
-done
+# # for word in ${sql[@]}
+# # do
+    check_Word $sql
+    RESULT=$RESULT' '$BEIGN
+# done
+
 echo $RESULT
