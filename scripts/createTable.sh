@@ -81,10 +81,14 @@ read_coulmns_names()
                 fi
             done
         fi
-
+        
         i=$(expr $i + 1)
 
     done
+    if ! [ $PK ]
+    then
+        PK=-1
+    fi    
     eval $COLUMNS_NAMES_var="'${COLUMNS_NAMES[@]}'" 
     # eval $TYPES_var="'${types[@]}'" 
     eval $PK_VAR="'$PK'"
@@ -105,7 +109,7 @@ create_table_file()
         i=$(( $i + 1 ))
     done
     fun ${*: -1}
-    if [[ $? = 0 && $i -gt 0 ]]
+    if [[ ( $? = 0 || $? = 1 )  && $i -gt 0 ]]
     then
         structure=$structure":(pk="${*: -1}")"
     fi
