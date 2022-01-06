@@ -1,4 +1,8 @@
 # !/usr/bin/bash
+export RED='\033[0;41m' #'\033[0;31m'
+export Green='\033[1;42m'
+export NC='\033[0m' # No Color
+
 projectPath=~/bash
 
 #database=$2
@@ -6,54 +10,65 @@ database=ahmed
 
 read_col()
 {
-    read -p "enter table name:" tableName
+    read -p "enter table name: " tableName
     if [[ -f $1/$tableName ]]
     then
-        tName=$1/$tableName
-        read -p "do you want to add a condition? [y/n]:" ch
-        if [[ $ch = 'y' ]]
-        then 
-            read -p "enter the id you want to delete: " ID
-            
-        elif [[ $ch = 'n' ]]
+        tName=$1/$tableName 
+        read -p "enter the column name of condition: " columncond
+        if [[ $columncond ]]
         then
-            echo "No"
-        else
-            echo "wrong entery"
+            read -p "enter the value you want to delete based on $columncond: " valuecond
         fi
         size=`wc -l $tName | awk '{ print $1 }'`
     else
-        echo "Table not found"
+        
+        echo -e "${RED}<<Table not found>>${NC}"
     fi
     eval $2="'$tName'"
     eval $3="'$size'"
-    eval $5="'$ID'"
-    eval $4="'$ch'"
+    eval $4="'$columncond'"
+    eval $5="'$valuecond'"
 }
 
 delete_col()
 {
-    if [[ $3 = 'y' ]]
+    if [[ $3 ]]
     then
-        #base 
-        i=0
-        for number in `tail -$(( $2-1 )) $1|cut -d: -f 1 | grep -nw $4  | cut -d: -f 1` #| grep -nw ahmed | cut -d: -f 1`
-        do
-            #echo the id = $(($number-$i+1))
-            sed -i "$(($number-$i+1)) d" $1
-            i=$(($i+1))
-        done  
-    elif [[ $3 = 'n' ]]
-    then
-        echo "No"
+        indexAndDataType $1 $3 columnIndex columnDataType
+        if [[ $columnIndex ]]
+        then
+            #base 
+            i=0
+            for number in `tail -$(( $2-1 )) $1|cut -d: -f $(($columnIndex+1)) | grep -nw $4  | cut -d: -f 1` #| grep -nw ahmed | cut -d: -f 1`
+            do
+                #echo the id = $(($number-$i+1))
+                sed -i "$(($number-$i+1)) d" $1
+                i=$(($i+1))
+            done
+            echo -e "${Green}<<\nyou have deleted $4 successfuly\n>>${NC}"
+        else
+            echo -e "${RED}<<\nthe column does not exist\n>>${NC}"
+        fi 
+    else
         sed -i "2,$2 d" $1
     fi
 }
 
+indexAndDataType() # for calling -> indexAndDataType $tableName $columnName columnIndex columnDataType
+{
+    columnIndexs=$( awk -F: '{for ( i=1 ; i<NF; i++) print $i; exit }' $1 |awk -F" " '{for ( i=0 ; i<NF; i++) if( $i == "'$2'" ) print NR-1  }')
+    columnDataTypes=$( awk -F: '{for ( i=1 ; i<NF; i++) print $i; exit }' $1 |awk -F" " '{for ( i=0 ; i<NF; i++) if( $i == "'$2'" ) print $2  }')
+    # will split first line in file to ("id int " ,"name string", ) then will pip to get the index of the "id" and the second call to get the data type 
+    eval $3="'$columnIndexs'"
+    eval $4="'$columnDataTypes'"
+} 
+
+database=$(./connectdb.sh 1)
+
 if [[ $database ]]
 then
-    read_col "$projectPath/databases/$database" tname size choice ID
-    delete_col $tname $size $choice $ID
+    read_col "$projectPath/databases/$database" tname size columncond condvalue
+    delete_col $tname $size $columncond $condvalue
 else
-    echo "Database not found"
+    echo -e "${RED}<<Database not found>>${NC}"
 fi
