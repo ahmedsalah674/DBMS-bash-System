@@ -1,4 +1,10 @@
 id int:name string:date string:(pk=0)
-1:ahmed:1999-12-11
 2:mohamed:1998-8-8
 3:salah:1997-3-21
+1::
+1:d:f
+1:d:f
+1:d:f
+252:d:ds
+5:d:d
+88:sda:ada
