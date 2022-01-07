@@ -1,0 +1,4 @@
+id int:name string:salary int:(pk=0)
+1:ahmed:15000
+2:mohamed:10000
+3:salah:10000
