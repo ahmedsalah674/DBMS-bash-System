@@ -2,7 +2,11 @@
 
 PS3="DBMS->";
 projectPath=~/bash
-
+export RED='\033[0;31m'
+export Green='\033[0;32m'
+export BLUE='\033[0;34m' #\033[1;35m
+export PUR='\033[1;35m' #\033[1;35m
+export NC='\033[0m'
 if ! [ -d  $projectPath/databases ]
 then
 	if [ -d $projectPath ]
@@ -29,54 +33,56 @@ else
 		rm $projectPath/confg/connection 
 	fi
 fi
-
-
+hisCuruntlocation=$(pwd)
+cd $projectPath/scripts
 while [ true ]
 do
-	select choice in "create database" "disply databases" "connect to database" "drop database" "exit"
+	echo -e $BLUE
+	select choice in "Create Database" "List Databases"  "Connect To Databases" "Drop Database" "Exit`echo -e $NC`"  
 	do
 	case $choice in 
-	"create database")
+	"Create Database")
 		if [ -f createdb.sh ]
 		then
 			./createdb.sh
 			break
 		else
-			echo "<< you deleted some important files download project again >>"
+			echo "${RED}<<you deleted some important files download project again>>$NC"
 		fi
 		;;
-	"disply databases")
+	"List Databases")
 		if [ -f displydb.sh ]
 		then
 			./displydb.sh
 			break
 		else
-			echo "<< you deleted some important files download project again >>"
+			echo "${RED}<<you deleted some important files download project again>>$NC"
 		fi
 		;;
-	"connect to database")
+	"Connect To Databases")
 		if [ -f connectdb.sh ]
 		then
-			./connectdb.sh
+			./connectdb.sh 0
 			break
 		else
-			echo "<< you deleted some important files download project again >>"
+			echo "${RED}<<you deleted some important files download project again>>$NC"
 		fi
 			;;
-	"drop database")
+	"Drop Database")
 		if [ -f dropdb.sh ]
 		then
 			./dropdb.sh
 			break
 		else
-			echo "<< you deleted some important files download project again >>"
+			echo "${RED}<<you deleted some important files download project again>>$NC"
 		fi
 		;;
-	"exit")
-		echo "Exiting ..."
+	"Exit`echo -e $NC`")
+		echo -e "${PUR}Exiting ...$NC"
+		cd $hisCuruntlocation
 		exit ;;
 	*)
-		echo "Wrong Entery"
+		echo -e "${RED}<<Wrong Entery>>$NC"
 		;;
 	esac
 	done

@@ -13,17 +13,17 @@ fun()
 
 read_col()
 {
-    read -p "enter table name:" tableName
+    read -p "`echo -e ${BLUE}`enter table name: `echo -e ${NC}`" tableName
     if [[ -f $1/$tableName ]]
     then
         tName=$1/$tableName
         size=`wc -l $tName | awk '{ print $1 }'`
 
-        read -p "enter the column name or *(select all): " column # enter column to select from or n -> select *
-        read -p "enter the column name of condition: " columncond # enter column to check condition ex id=4
+        read -p "`echo -e $BLUE`enter the column name or ALL (select all): `echo -e $NC`" column # enter column to select from or n -> select *
+        read -p "`echo -e $BLUE`enter the column name of condition: `echo -e $NC`" columncond # enter column to check condition ex id=4
         if [[ $columncond ]]
         then
-            read -p "enter the condition " cond    
+            read -p "`echo -e $BLUE`enter the condition: `echo  -e $NC`" cond    
         fi
     else
         echo -e "${RED}<<Table not found>>${NC}"
@@ -40,12 +40,12 @@ read_col()
 selectAll()
 {
     indexAndDataType $1 $3 selectorIndex selectorDataType
-    if [[ $3 = '*' ]]
+    if [[ $3 = "ALL" ]]
     then
         if [[ -z $4 ]]                  
         then
             echo
-            sed -e 's/:/ /g' $1 | sed -n "2,$2p"
+            sed -n "2,$2p" $1
             #-e "s/:/ /"
             echo
         else
@@ -64,7 +64,7 @@ selectAll()
     else
         if [[ -z $selectorIndex ]]
         then
-            echo -e "${RED}<< \nthere is no column $3 in the table to select \n>>${NC}"
+            echo -e "${RED}<<there is no column $3 in the table to select >>${NC}"
         else # there is a value to select 
             if [[ -z $4 ]]
             then

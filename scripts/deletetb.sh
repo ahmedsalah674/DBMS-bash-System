@@ -2,6 +2,7 @@
 export RED='\033[0;41m' #'\033[0;31m'
 export Green='\033[1;42m'
 export NC='\033[0m' # No Color
+export BLUE='\033[0;34m'
 
 projectPath=~/bash
 
@@ -10,14 +11,14 @@ database=ahmed
 
 read_col()
 {
-    read -p "enter table name: " tableName
+    read -p "`echo -e $BLUE`enter table name: `echo -e $NC`" tableName
     if [[ -f $1/$tableName ]]
     then
         tName=$1/$tableName 
-        read -p "enter the column name of condition: " columncond
+        read -p "`echo -e $BLUE`enter the column name of condition: `echo -e $NC`" columncond
         if [[ $columncond ]]
         then
-            read -p "enter the value you want to delete based on $columncond: " valuecond
+            read -p "`echo -e $BLUE`enter the value you want to delete based on $columncond: `echo -e $NC`" valuecond
         fi
         size=`wc -l $tName | awk '{ print $1 }'`
     else
@@ -45,9 +46,9 @@ delete_col()
                 sed -i "$(($number-$i+1)) d" $1
                 i=$(($i+1))
             done
-            echo -e "${Green}<<\nyou have deleted $4 successfuly\n>>${NC}"
+            echo -e "${Green}<<you have deleted $4 successfuly>>${NC}"
         else
-            echo -e "${RED}<<\nthe column does not exist\n>>${NC}"
+            echo -e "${RED}<<the column does not exist>>${NC}"
         fi 
     else
         sed -i "2,$2 d" $1

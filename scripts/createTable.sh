@@ -1,5 +1,10 @@
 # !/usr/bin/bash
 projectPath=~/bash
+export RED='\033[0;31m'
+export Green='\033[0;32m'
+export BLUE='\033[0;34m' #\033[1;35m
+export PUR='\033[1;35m' #\033[1;35m
+export NC='\033[0m'
 fun()
 {
     expr $1 + 1 2> /dev/null >> /dev/null
@@ -8,21 +13,21 @@ read_data()
 {
     local  TABLEVAR=$1
     local  COLUMNSVAR=$2
-    read -p "enter table name: " TABLE_NAME
+    read -p "`echo -e $RED`enter table name: `echo -e $NC`" TABLE_NAME
     if [ -f  $3/$TABLE_NAME ]
     then
-        echo "<<table already exited>>"
+        echo -e "$RED<<table already exited>>$NC"
         exit 2
     else
         while [ true ]
         do
-            read -p "enter how many columns: " COLUMN_NUM
+            read -p "`echo -e $RED`enter how many columns: `echo -e $NC`" COLUMN_NUM
             fun $COLUMN_NUM
             if [[ $? = 0 ]]
             then
                 break
             else
-                echo "<<number of coulmns must be number>>"
+                echo -e "$RED<<number of coulmns must be number>>$NC"
             fi
         done
     fi
@@ -39,14 +44,14 @@ read_coulmns_names()
     while [ $i -lt $1 ]
     do
     # id (int) : name (string)
-        read -p "enter column name:" COLUMNS_NAMES[$i]
+        read -p "`echo -e $RED`enter column name: `echo -e $NC`" COLUMNS_NAMES[$i]
         
         j=0
         for name in ${COLUMNS_NAMES[@]}
         do  
             if [[ $j -ne $i && ${COLUMNS_NAMES[$((i))]} = ${COLUMNS_NAMES[$((j))]} ]]
             then
-                echo "<<there is coulmn with same name ( ${COLUMNS_NAMES[$((j))]} )" 
+                echo -e "$RED<<there is coulmn with same name ( ${COLUMNS_NAMES[$((j))]} ) $NC" 
                 continue 2
             
             else
@@ -56,12 +61,12 @@ read_coulmns_names()
 
         while true
         do
-            read -p "enter data type of column: " types[$i]
+            read -p "`echo -e $BLUE`enter data type of column: `echo -e $NC`" types[$i]
             if [[ ${types[$((i))]} = "int" || ${types[$((i))]} = "string" ]]
             then
                 break
             else 
-                echo "<< wrong data type >>"
+                echo -e "$RED<<wrong data type>>$NC"
             fi
         done
         
@@ -70,12 +75,12 @@ read_coulmns_names()
         then
             while true
             do
-                read -p "are you want it primary key? [y/n]: " answer
-                if [[ $answer = 'y' ]]
+                read -p "`echo -e $BLUE`are you want it primary key? [Y/N-y/n]: `echo -e $NC`" answer
+                if [[ $answer = 'y' || $answer = 'Y' ]]
                 then
                     PK=$i
                     break
-                elif [ $answer = 'n' ]
+                elif [[ $answer = 'n' || $answer = 'N' ]]
                 then
                     break            
                 fi
@@ -130,23 +135,13 @@ main()
             # echo "you want to create table ( $tableName ) with ( $columnNumber ) and names ( ${columnNames[*]} ) and primary key in ( $pk ) "
         elif ! [ -d $1 ]  
         then
-            echo "project must be in $1"
+            echo -e "${RED}project must be in $1${NC}"
         else
-            echo "<<$database not found>>"
+            echo -e "$RED<<$database not found>>$NC"
         fi
     else
-        echo "no database connection "
+        echo -e "${RED}no database connection$NC"
     fi
 }
 
 main $projectPath $(./connectdb.sh 1)
-
-# function myfunc()
-# {
-#     local  __resultvar=$1
-#     local  myresult='some value'
-    
-#     eval $__resultvar="'$myresult'"
-# }
-# myfunc result
-# echo $result
