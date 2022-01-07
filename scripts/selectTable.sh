@@ -17,8 +17,8 @@ read_col()
     if [[ -f $1/$tableName ]]
     then
         tName=$1/$tableName
+        #  ex: 4 tablename  -> $1=4 (first column)
         size=`wc -l $tName | awk '{ print $1 }'`
-
         read -p "`echo -e $BLUE`enter the column name or ALL (select all): `echo -e $NC`" column # enter column to select from or n -> select *
         read -p "`echo -e $BLUE`enter the column name of condition: `echo -e $NC`" columncond # enter column to check condition ex id=4
         if [[ $columncond ]]
@@ -45,6 +45,7 @@ selectAll()
         if [[ -z $4 ]]                  
         then
             echo
+            # display the whole data from 2 to the size
             sed -n "2,$2p" $1
             #-e "s/:/ /"
             echo
@@ -55,6 +56,7 @@ selectAll()
                 # numbers of lines that have the value in the column that selected   1 2 3 
                 for lineNum in `cut -d: -f$(($colIndex+1)) $1| grep -nw $5|cut -d: -f1`
                 do 
+                    # if NR matches the line we are currently on it, it will print the whole record
                     awk '{if( NR == "'$lineNum'" ) print $0}' $1
                 done
             else
@@ -68,6 +70,7 @@ selectAll()
         else # there is a value to select 
             if [[ -z $4 ]]
             then
+                # select a whole column based on selectorIndex
                 s=$(wc -l $1 | cut -d" " -f1)
                 echo
                 echo -e "${BLUE}$3${NC}"

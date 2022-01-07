@@ -1,13 +1,10 @@
 # !/usr/bin/bash
-export RED='\033[0;41m' #'\033[0;31m'
-export Green='\033[1;42m'
-export NC='\033[0m' # No Color
-export BLUE='\033[0;34m'
-
+export RED='\033[0;31m'
+export Green='\033[0;32m'
+export BLUE='\033[0;34m' #\033[1;35m
+export NC='\033[0m'
+export PUR='\033[1;35m' #\033[1;35m
 projectPath=~/bash
-
-#database=$2
-database=ahmed
 
 read_col()
 {
@@ -35,14 +32,16 @@ delete_col()
 {
     if [[ $3 ]]
     then
+        # columnIndex ==> the index of the column in the condition
         indexAndDataType $1 $3 columnIndex columnDataType
         if [[ $columnIndex ]]
         then
-            #base 
+            # condition ==>  all Records      the column where the value exists   2  ahmed           2 
             i=0
             for number in `tail -$(( $2-1 )) $1|cut -d: -f $(($columnIndex+1)) | grep -nw $4  | cut -d: -f 1` #| grep -nw ahmed | cut -d: -f 1`
             do
                 #echo the id = $(($number-$i+1))
+                # i need bec the row will be deleted and shifts upwards.
                 sed -i "$(($number-$i+1)) d" $1
                 i=$(($i+1))
             done
@@ -51,6 +50,7 @@ delete_col()
             echo -e "${RED}<<the column does not exist>>${NC}"
         fi 
     else
+        # no condition ==> delete all records
         sed -i "2,$2 d" $1
     fi
 }
