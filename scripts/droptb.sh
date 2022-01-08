@@ -21,12 +21,12 @@ then
         do
             read -p "`echo -e $RED`are you sure? [Y/N-y/n] : `echo -e $NC`" answer
 
-            if [ $answer = "y" | $answer = "Y" ]
+            if [[ $answer = "y" || $answer = "Y" ]]
             then
                 rm $projectPath/databases/$database/$table
-                echo "$Green<<table $table is deleted>>$NC"
+                echo "$GREEN<<table $table is deleted>>$NC"
                 break
-            elif [[ $answer = "n" | $answer = "N" ]]
+            elif [[ $answer = "n" || $answer = "N" ]]
             then
                 break
             else
