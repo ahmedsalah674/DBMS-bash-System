@@ -1,8 +1,10 @@
 #!/usr/bin/bash
 projectPath=~/bash
-export RED='\033[0;41m'
-export Green='\033[0;42m'
+export RED='\033[0;41m' #'\033[0;31m'
+export Green='\033[1;42m'
 export NC='\033[0m' # No Color
+export BLUE='\033[0;34m'
+export PUR='\033[1;35m'
 fun()
 {
     expr $1 + 1 2> /dev/null >> /dev/null

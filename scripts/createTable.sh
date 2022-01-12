@@ -1,6 +1,6 @@
 # !/usr/bin/bash
 projectPath=~/bash
-export RED='\033[0;31m'
+export RED='\033[0;41m'
 export Green='\033[0;32m'
 export BLUE='\033[0;34m' #\033[1;35m
 export PUR='\033[1;35m' #\033[1;35m
@@ -13,7 +13,7 @@ read_data()
 {
     local  TABLEVAR=$1
     local  COLUMNSVAR=$2
-    read -p "`echo -e $RED`enter table name: `echo -e $NC`" TABLE_NAME
+    read -p "`echo -e $BLUE`enter table name:`echo -e $NC` " TABLE_NAME
     if [ -f  $3/$TABLE_NAME ]
     then
         echo -e "$RED<<table already exited>>$NC"
@@ -21,7 +21,7 @@ read_data()
     else
         while [ true ]
         do
-            read -p "`echo -e $RED`enter how many columns: `echo -e $NC`" COLUMN_NUM
+            read -p "`echo -e $BLUE`enter how many columns: `echo -e $NC`" COLUMN_NUM
             fun $COLUMN_NUM
             if [[ $? = 0 ]]
             then
@@ -44,7 +44,7 @@ read_coulmns_names()
     while [ $i -lt $1 ]
     do
     # id (int) : name (string)
-        read -p "`echo -e $RED`enter column name: `echo -e $NC`" COLUMNS_NAMES[$i]
+        read -p "`echo -e $BLUE`enter column name:`echo -e $NC` " COLUMNS_NAMES[$i]
         
         j=0
         for name in ${COLUMNS_NAMES[@]}
@@ -61,7 +61,7 @@ read_coulmns_names()
 
         while true
         do
-            read -p "`echo -e $BLUE`enter data type of column: `echo -e $NC`" types[$i]
+            read -p "`echo -e $BLUE`enter data type of column:`echo -e $NC` " types[$i]
             if [[ ${types[$((i))]} = "int" || ${types[$((i))]} = "string" ]]
             then
                 break
@@ -119,6 +119,7 @@ create_table_file()
         structure=$structure":(pk="${*: -1}")"
     fi
     echo $structure > $1
+    echo -e "${Green}table created successfully$NC"
 }
 main()
 {

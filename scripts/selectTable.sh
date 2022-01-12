@@ -1,9 +1,9 @@
 # !/usr/bin/bash
 export RED='\033[0;41m' #'\033[0;31m'
-export Green='\033[1;42m' 
-export BLUE='\033[1;34m'
+export Green='\033[1;42m'
 export NC='\033[0m' # No Color
-
+export BLUE='\033[0;34m'
+export PUR='\033[1;35m'
 projectPath=~/bash
 
 fun()
@@ -39,6 +39,12 @@ read_col()
 
 selectAll()
 {
+    if [[ -z $5 ]]
+    then
+        search="\'\'"
+    else
+        search=$5
+    fi
     indexAndDataType $1 $3 selectorIndex selectorDataType
     if [[ $3 = "ALL" ]]
     then
@@ -53,14 +59,30 @@ selectAll()
             indexAndDataType $1 $4 colIndex columnDataType
             if [[ $colIndex ]]
             then
-                # numbers of lines that have the value in the column that selected   1 2 3 
-                for lineNum in `cut -d: -f$(($colIndex+1)) $1| grep -nw $5|cut -d: -f1`
-                do 
-                    # if NR matches the line we are currently on it, it will print the whole record
-                    awk '{if( NR == "'$lineNum'" ) print $0}' $1
-                done
+                    if [[ $columnDataType == 'int' ]]
+                    then
+                        fun $5
+                        if [[ $? -lt 2 ]]
+                        then                            
+                            # numbers of lines that have the value in the column that selected   1 2 3 
+                            for lineNum in `cut -d: -f$(($colIndex+1)) $1| grep -nw $search |cut -d: -f1`
+                            do 
+                                # if NR matches the line we are currently on it, it will print the whole record
+                                awk '{if( NR == "'$lineNum'" ) print $0}' $1
+                            done
+                        else
+                            echo -e "${RED}<<condition value is not integer>>$NC"
+                        fi
+                    else    
+                        # numbers of lines that have the value in the column that selected   1 2 3 
+                        for lineNum in `cut -d: -f$(($colIndex+1)) $1| grep -nw $search |cut -d: -f1`
+                        do 
+                            # if NR matches the line we are currently on it, it will print the whole record
+                            awk '{if( NR == "'$lineNum'" ) print $0}' $1
+                        done
+                    fi
             else
-                echo -e "${RED}<<\nthere is no column $4 in the table to compare\n>>${NC}"
+                echo -e "${RED}<<there is no column $4 in the table to compare>>${NC}"
             fi
         fi
     else
@@ -80,22 +102,27 @@ selectAll()
                 indexAndDataType $1 $4 colIndex columnDataType
                 if [[ $colIndex ]]
                 then
-                    # if [[ columnDataType == 'int' ]]
-                    # then    
-                    #     fun $5
-                    #     if [[ $? -lt 2 ]]
-                    #     then
+                    if [[ $columnDataType == 'int' ]]
+                    then    
+                        fun $5
+                        if [[ $? -lt 2 ]]
+                        then
                             #numbers of lines that have the value in the column that selected   1 2 3 
-                            for lineNum in `cut -d: -f$(($colIndex+1)) $1| grep -nw $5|cut -d: -f1`
+                            for lineNum in `cut -d: -f$(($colIndex+1)) $1| grep -nw $search|cut -d: -f1`
                             do 
                                 awk -F: '{if( NR == "'$lineNum'" ) print $"'$(($selectorIndex+1))'"}' $1
                             done
-                    #     else
-                    #         echo "condition value is not integer"
-                    #     fi
-                    # fi
+                        else
+                            echo -e "${RED}condition value is not integer$NC"
+                        fi
+                    else
+                        for lineNum in `cut -d: -f$(($colIndex+1)) $1| grep -nw $search|cut -d: -f1`
+                        do 
+                            awk -F: '{if( NR == "'$lineNum'" ) print $"'$(($selectorIndex+1))'"}' $1
+                        done
+                    fi
                 else
-                    echo -e "\nthere is no column $4 in the table to compare\n"
+                    echo -e "<<${RED}there is no column $4 in the table to compare>>$NC"
                 fi
             fi
         fi

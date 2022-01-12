@@ -1,12 +1,11 @@
 # !usr/bin/bash
 projectPath=~/bash
 
-export RED='\033[0;31m'
-export Green='\033[0;32m'
-export BLUE='\033[0;34m' #\033[1;35m
-export PUR='\033[1;35m' #\033[1;35m
-export NC='\033[0m'
-
+export RED='\033[0;41m' #'\033[0;31m'
+export Green='\033[1;42m'
+export NC='\033[0m' # No Color
+export BLUE='\033[0;34m'
+export PUR='\033[1;35m'
 database=$(./connectdb.sh 1)
 
 if [ -d $projectPath/databases/$database ]

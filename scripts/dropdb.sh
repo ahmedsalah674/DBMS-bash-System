@@ -1,5 +1,9 @@
 # !usr/bin/bash
-
+export RED='\033[0;41m'
+export Green='\033[1;42m'
+export NC='\033[0m' # No Color
+export BLUE='\033[0;34m'
+export PUR='\033[1;35m'
 projectPath=~/bash
 read_DatabaseName()
 {   

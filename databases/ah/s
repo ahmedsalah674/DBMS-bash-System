@@ -6,5 +6,3 @@ s int:name string:date string:(pk=0)
 5:s:s
 6:s:s
 7:s:s
-8:s:s
-9:s:s

@@ -1,5 +1,5 @@
 # !/usr/bin/bash
-export RED='\033[0;31m'
+export RED='\033[0;41m'
 export Green='\033[0;32m'
 export BLUE='\033[0;34m' #\033[1;35m
 export NC='\033[0m'
@@ -30,6 +30,12 @@ read_col()
 
 delete_col()
 {
+    if [[ -z $4 ]]
+    then
+        search="\'\'"
+    else
+        search=$4
+    fi
     if [[ $3 ]]
     then
         # columnIndex ==> the index of the column in the condition
@@ -38,14 +44,18 @@ delete_col()
         then
             # condition ==>  all Records      the column where the value exists   2  ahmed           2 
             i=0
-            for number in `tail -$(( $2-1 )) $1|cut -d: -f $(($columnIndex+1)) | grep -nw $4  | cut -d: -f 1` #| grep -nw ahmed | cut -d: -f 1`
+            for number in `tail -$(( $2-1 )) $1|cut -d: -f $(($columnIndex+1)) | grep -nw $search  | cut -d: -f 1` #| grep -nw ahmed | cut -d: -f 1`
             do
-                #echo the id = $(($number-$i+1))
+                echo the id = $(($number-$i+1))
                 # i need bec the row will be deleted and shifts upwards.
                 sed -i "$(($number-$i+1)) d" $1
                 i=$(($i+1))
+                deleted=1
             done
-            echo -e "${Green}<<you have deleted $4 successfuly>>${NC}"
+            if [[ $deleted == 1 ]]
+            then
+                echo -e "${Green}<<you have deleted $4 successfuly>>${NC}"
+            fi
         else
             echo -e "${RED}<<the column does not exist>>${NC}"
         fi 
@@ -71,5 +81,5 @@ then
     read_col "$projectPath/databases/$database" tname size columncond condvalue
     delete_col $tname $size $columncond $condvalue
 else
-    echo -e "${RED}<<Database not found>>${NC}"
+    echo -e "${RED}<<no database connection>>${NC}"
 fi

@@ -1,6 +1,6 @@
 # !/usr/bin/bash
 projectPath=~/bash
-export RED='\033[0;311m'
+export RED='\033[0;41m'
 export Green='\033[0;32m'
 export BLUE='\033[0;34m' #\033[1;35m
 export PUR='\033[1;35m' #\033[1;35m

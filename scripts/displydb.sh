@@ -3,7 +3,7 @@
 projectPath=~/bash
 
 #search_dir= ls $projectPath/databases
-export RED='\033[0;31m'
+export RED='\033[0;41m'
 export NC='\033[0m'
 export PUR='\033[1;35m' #\033[1;35m
 
