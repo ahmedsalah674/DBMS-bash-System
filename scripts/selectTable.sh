@@ -4,6 +4,7 @@ export Green='\033[1;42m'
 export NC='\033[0m' # No Color
 export BLUE='\033[0;34m'
 export PUR='\033[1;35m'
+export orange='\033[0;33m'
 projectPath=~/bash
 
 fun()
@@ -13,17 +14,17 @@ fun()
 
 read_col()
 {
-    read -p "`echo -e ${BLUE}`enter table name: `echo -e ${NC}`" tableName
+    read -p "`echo -e ${orange}`enter table name: `echo -e ${NC}`" tableName
     if [[ -f $1/$tableName ]]
     then
         tName=$1/$tableName
         #  ex: 4 tablename  -> $1=4 (first column)
         size=`wc -l $tName | awk '{ print $1 }'`
-        read -p "`echo -e $BLUE`enter the column name or ALL (select all): `echo -e $NC`" column # enter column to select from or n -> select *
-        read -p "`echo -e $BLUE`enter the column name of condition: `echo -e $NC`" columncond # enter column to check condition ex id=4
+        read -p "`echo -e $orange`enter the column name or ALL (select all): `echo -e $NC`" column # enter column to select from or n -> select *
+        read -p "`echo -e $orange`enter the column name of condition: `echo -e $NC`" columncond # enter column to check condition ex id=4
         if [[ $columncond ]]
         then
-            read -p "`echo -e $BLUE`enter the condition: `echo  -e $NC`" cond    
+            read -p "`echo -e $orange`enter the condition: `echo  -e $NC`" cond    
         fi
     else
         echo -e "${RED}<<Table not found>>${NC}"
@@ -95,7 +96,7 @@ selectAll()
                 # select a whole column based on selectorIndex
                 s=$(wc -l $1 | cut -d" " -f1)
                 echo
-                echo -e "${BLUE}$3${NC}"
+                echo -e "${orange}$3${NC}"
                 tail -$(($s-1)) $1 |cut -d: -f$(($selectorIndex+1))
                 echo
             else

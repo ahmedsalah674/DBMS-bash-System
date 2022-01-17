@@ -1,10 +1,11 @@
 #!/usr/bin/bash
 projectPath=~/bash
 export RED='\033[0;41m' #'\033[0;31m'
-export Green='\033[1;42m'
+export Green='\033[1;32m'
 export NC='\033[0m' # No Color
 export BLUE='\033[0;34m'
 export PUR='\033[1;35m'
+export orange='\033[0;33m'
 fun()
 {
     expr $1 + 1 2> /dev/null >> /dev/null
@@ -59,7 +60,7 @@ read_updateColumn()
 {
     while true
     do 
-        read -p "enter the column name for update: " fun_updateColumn 
+        read -p "`echo -e ${orange}`enter the column name for update:`echo -e $NC` " fun_updateColumn 
         if [[ $fun_updateColumn ]]
         then
             indexAndDataType $1 $fun_updateColumn fun_updateColumnIndex fun_updateColumnDataType
@@ -83,7 +84,7 @@ read_updateValue()  #calling -> $tableName arg_updateValue $arg_updateColumnData
 {
     while true
     do
-        read -p "enter the $updateColumn_arg new value : " fun_updateValue     
+        read -p "`echo -e ${orange}`enter the $updateColumn_arg new value :`echo -e $NC` " fun_updateValue     
         if [[ $fun_updateValue ]]
         then
             if [[ $3 == "int" ]]
@@ -120,13 +121,13 @@ read_conditionColumn()
 {
     while true
     do
-        read -p "enter the column name of condition: " fun_conditionColumn     
+        read -p "`echo -e ${orange}`enter the column name of condition:`echo -e $NC` " fun_conditionColumn     
         if [[ $fun_conditionColumn ]]
         then
             indexAndDataType $1 $fun_conditionColumn conditionColumnIndex conditionColumnDataType
             if [[ $conditionColumnIndex ]]
             then
-                read -p "enter value of condition: " fun_conditionValue    
+                read -p "`echo -e ${orange}`enter value of condition:`echo -e $NC` " fun_conditionValue    
                 break 
             else
                 echo -e "${RED}<<this column not found >>${NC}"
@@ -279,7 +280,7 @@ update_main()
     database=$2
     if [[ $database ]]
     then
-        read -p "enter table name :" tableName
+        read -p "`echo -e ${orange}`enter table name :`echo -e $NC` " tableName
         tableName="$1/databases/$database/$tableName"
         if [[ -f $tableName ]]
         then

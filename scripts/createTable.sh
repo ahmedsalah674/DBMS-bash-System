@@ -5,6 +5,7 @@ export Green='\033[0;32m'
 export BLUE='\033[0;34m' #\033[1;35m
 export PUR='\033[1;35m' #\033[1;35m
 export NC='\033[0m'
+export orange='\033[0;33m'
 fun()
 {
     expr $1 + 1 2> /dev/null >> /dev/null
@@ -13,7 +14,7 @@ read_data()
 {
     local  TABLEVAR=$1
     local  COLUMNSVAR=$2
-    read -p "`echo -e $BLUE`enter table name:`echo -e $NC` " TABLE_NAME
+    read -p "`echo -e $orange`enter table name:`echo -e $NC` " TABLE_NAME
     if [ -f  $3/$TABLE_NAME ]
     then
         echo -e "$RED<<table already exited>>$NC"
@@ -21,7 +22,7 @@ read_data()
     else
         while [ true ]
         do
-            read -p "`echo -e $BLUE`enter how many columns: `echo -e $NC`" COLUMN_NUM
+            read -p "`echo -e $orange`enter how many columns: `echo -e $NC`" COLUMN_NUM
             fun $COLUMN_NUM
             if [[ $? = 0 ]]
             then
@@ -44,7 +45,7 @@ read_coulmns_names()
     while [ $i -lt $1 ]
     do
     # id (int) : name (string)
-        read -p "`echo -e $BLUE`enter column name:`echo -e $NC` " COLUMNS_NAMES[$i]
+        read -p "`echo -e $orange`enter column name:`echo -e $NC` " COLUMNS_NAMES[$i]
         
         j=0
         for name in ${COLUMNS_NAMES[@]}
@@ -61,7 +62,7 @@ read_coulmns_names()
 
         while true
         do
-            read -p "`echo -e $BLUE`enter data type of column:`echo -e $NC` " types[$i]
+            read -p "`echo -e $orange`enter data type of column:`echo -e $NC` " types[$i]
             if [[ ${types[$((i))]} = "int" || ${types[$((i))]} = "string" ]]
             then
                 break
@@ -75,7 +76,7 @@ read_coulmns_names()
         then
             while true
             do
-                read -p "`echo -e $BLUE`are you want it primary key? [Y/N-y/n]: `echo -e $NC`" answer
+                read -p "`echo -e $orange`are you want it primary key? [Y/N-y/n]: `echo -e $NC`" answer
                 if [[ $answer = 'y' || $answer = 'Y' ]]
                 then
                     PK=$i

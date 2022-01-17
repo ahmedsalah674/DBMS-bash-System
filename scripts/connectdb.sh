@@ -1,16 +1,18 @@
 # !/usr/bin/bash
 projectPath=~/bash
 export RED='\033[0;41m'
+export red='\033[0;31m'
 export Green='\033[0;32m'
 export BLUE='\033[0;34m' #\033[1;35m
 export PUR='\033[1;35m' #\033[1;35m
 export NC='\033[0m'
-export Yellow='\033[0;33m'  
+export Yellow='\033[0;33m'
+export orange='\033[0;33m'  
 read_DatabaseName()
 {   
     while true
     do
-	read -p "`echo -e ${BLUE}`<<please enter database name: `echo -e ${NC}`" sql
+	read -p "`echo -e ${orange}`<<please enter database name: `echo -e ${NC}`" sql
 	# read sql;
 	if [[ $sql ]]
 	then
@@ -63,12 +65,13 @@ connected_database()
 
 selectOptions()
 {
-    PS3=$(echo -e "$Yellow$(connected_database  $1)->$NC")
+    PS3=$(echo -e "$red$(connected_database  $1)->$NC")
     while [ true ]
 do
-	echo -e $BLUE
-	select choice in "Create Table" "List Tables" "Drop Table" "Insert into Table" "Select From Table" "Delete From Table" "Update Table" "Back`echo -e $NC`"  
-	do
+	echo -e $orange
+	select choice in "Create Table" "List Tables" "Drop Table" "Insert into Table" "Select From Table" "Delete From Table" "Update Table" "Back"
+    do 
+    echo -e $NC
 	case $choice in 
 	"Create Table")
 		if [ -f createTable.sh ]
@@ -133,7 +136,7 @@ do
                     echo "${RED}<<you deleted some important files download project again>>$NC"
                 fi
                 ;;
-	"Back`echo -e $NC`")
+	"Back")
     if [[ -f $1/confg/connection ]]
     then
         rm $1/confg/connection

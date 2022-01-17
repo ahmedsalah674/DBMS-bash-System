@@ -5,11 +5,11 @@ export Green='\033[0;32m'
 export BLUE='\033[0;34m' #\033[1;35m
 export PUR='\033[1;35m' #\033[1;35m
 export NC='\033[0m'
-
+export orange='\033[0;33m'
 projectPath=~/bash
 database=$(./connectdb.sh 1)
 
-echo -e "${BLUE}enter the table name: $NC"
+echo -e "${orange}enter the table name: $NC"
 read table
 
 
@@ -24,7 +24,7 @@ then
             if [[ $answer = "y" || $answer = "Y" ]]
             then
                 rm $projectPath/databases/$database/$table
-                echo "$GREEN<<table $table is deleted>>$NC"
+                echo -e "$Green<<table $table is deleted>>$NC"
                 break
             elif [[ $answer = "n" || $answer = "N" ]]
             then

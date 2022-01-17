@@ -1,9 +1,10 @@
 # !/usr/bin/bash
 projectPath=~/bash
 export RED='\033[0;41m' #'\033[0;31m'
-export Green='\033[1;42m'
+export Green='\033[1;32m'
 export NC='\033[0m' # No Color
 export BLUE='\033[0;34m'
+export orange='\033[0;33m'
 export PUR='\033[1;35m'
 fun()
 {
@@ -48,7 +49,7 @@ getValues()
                 then
                     while true
                     do    
-                        read -p "`echo -e ${BLUE}`enter value of '$word': `echo -e ${NC}`" value 
+                        read -p "`echo -e ${orange}`enter value of '$word': `echo -e ${NC}`" value 
                         if [[ ${speratedStructure[$(($i+1))]} = "int" ]]
                         then
                             fun $value
@@ -118,7 +119,7 @@ insert_main()
     database=$2
     if [[ $database ]]
     then
-        read -p "`echo -e $BLUE`enter table name : `echo -e $NC`" tableName
+        read -p "`echo -e $orange`enter table name : `echo -e $NC`" tableName
         if [[ -f $1/databases/$database/$tableName ]]
         then
             structureAndnumber "$1/databases/$database/$tableName"  columnsNumber # will use ${columnNamesData[@]} for structure of table

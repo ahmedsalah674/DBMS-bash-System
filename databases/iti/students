@@ -1,0 +1,4 @@
+id int:name string:intake int:(pk=0)
+1:students:42
+2:mohamed:42
+3:salah:42

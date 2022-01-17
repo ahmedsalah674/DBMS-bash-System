@@ -6,9 +6,10 @@ export Green='\033[0;32m'
 export BLUE='\033[0;34m' #\033[1;35m
 export NC='\033[0m'
 export PUR='\033[1;35m' #\033[1;35m
+export orange='\033[0;33m'
 while true
 do
-	read -p "`echo -e ${BLUE}`<<please enter database name: `echo -e ${NC}`" sql
+	read -p "`echo -e ${orange}`<<please enter database name: `echo -e ${NC}`" sql
 	if [[ $sql ]]
 	then
 		database=$sql

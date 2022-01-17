@@ -4,18 +4,19 @@ export Green='\033[0;32m'
 export BLUE='\033[0;34m' #\033[1;35m
 export NC='\033[0m'
 export PUR='\033[1;35m' #\033[1;35m
+export orange='\033[0;33m'
 projectPath=~/bash
 
 read_col()
 {
-    read -p "`echo -e $BLUE`enter table name: `echo -e $NC`" tableName
+    read -p "`echo -e $orange`enter table name: `echo -e $NC`" tableName
     if [[ -f $1/$tableName ]]
     then
         tName=$1/$tableName 
-        read -p "`echo -e $BLUE`enter the column name of condition: `echo -e $NC`" columncond
+        read -p "`echo -e $orange`enter the column name of condition: `echo -e $NC`" columncond
         if [[ $columncond ]]
         then
-            read -p "`echo -e $BLUE`enter the value you want to delete based on $columncond: `echo -e $NC`" valuecond
+            read -p "`echo -e $orange`enter the value you want to delete based on $columncond: `echo -e $NC`" valuecond
         fi
         size=`wc -l $tName | awk '{ print $1 }'`
     else
@@ -46,7 +47,7 @@ delete_col()
             i=0
             for number in `tail -$(( $2-1 )) $1|cut -d: -f $(($columnIndex+1)) | grep -nw $search  | cut -d: -f 1` #| grep -nw ahmed | cut -d: -f 1`
             do
-                echo the id = $(($number-$i+1))
+                # echo the id = $(($number-$i+1))
                 # i need bec the row will be deleted and shifts upwards.
                 sed -i "$(($number-$i+1)) d" $1
                 i=$(($i+1))
